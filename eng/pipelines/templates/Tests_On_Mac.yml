@@ -1,9 +1,10 @@
 steps:
-- task: DownloadBuildArtifacts@0
+- task: DownloadPipelineArtifact@2
   displayName: "Download NuGet.CommandLine.Test artifacts"
   inputs:
     artifactName: "NuGet.CommandLine.Test"
-    downloadPath: "$(Build.Repository.LocalPath)/artifacts"
+    downloadPath: "$(Build.Repository.LocalPath)/artifacts/NuGet.CommandLine.Test"
+  condition: "and(succeeded(), eq(variables['TestRunDisplayName'], 'Mono Tests'))"
 
 - task: ShellScript@2
   displayName: "Run Tests (continue on error)"
@@ -32,14 +33,6 @@ steps:
     mergeTestResults: "true"
     testRunTitle: "NuGet.Client Tests On Mac"
   condition: "succeededOrFailed()"
-
-- task: PublishBuildArtifacts@1
-  displayName: "Publish Test Hang Dump"
-  inputs:
-    PathtoPublish: "$(Build.Repository.LocalPath)/build/TestResults"
-    ArtifactName: "$(Agent.JobName)"
-    ArtifactType: "Container"
-  condition: "or(failed(), canceled())"
 
 - task: PowerShell@2
   displayName: "Initialize Git Commit Status on GitHub"
