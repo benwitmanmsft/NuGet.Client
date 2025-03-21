@@ -763,7 +763,7 @@ namespace NuGet.Commands
                         NuGetLogCode.NU1507,
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            Strings.Warning_CentralPackageVersions_MultipleSourcesWithoutPackageSourceMapping,
+                            Strings.Warning_CentralPackageManagement_MultipleSourcesWithoutPackageSourceMapping,
                             httpSourcesCount,
                             string.Join(", ", restoreRequest.DependencyProviders.RemoteProviders.Where(i => i.IsHttp).Select(i => i.Source.Name)))));
             }
@@ -832,7 +832,7 @@ namespace NuGet.Commands
                         NuGetLogCode.NU1008,
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            Strings.Error_CentralPackageVersions_VersionsNotAllowed,
+                            Strings.Error_CentralPackageManagement_PackageReferenceWithVersionNotAllowed,
                             string.Join(", ", dependenciesWithDefinedVersion.Select(d => d.Name)))));
 
                 result = false;
@@ -845,7 +845,7 @@ namespace NuGet.Commands
                         NuGetLogCode.NU1009,
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            Strings.Error_CentralPackageVersions_AutoreferencedReferencesNotAllowed,
+                            Strings.Error_CentralPackageManagement_ImplicitPackageReferenceWithVersionNotAllowed,
                             string.Join(", ", autoReferencedAndDefinedInCentralFile.Select(d => d.Name)))));
 
                 result = false;
@@ -858,7 +858,7 @@ namespace NuGet.Commands
                         NuGetLogCode.NU1010,
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            Strings.Error_CentralPackageVersions_MissingPackageVersion,
+                            Strings.Error_CentralPackageManagement_MissingPackageVersion,
                             string.Join(", ", packageReferencedDependenciesWithoutCentralVersionDefined.Select(d => d.Name)))));
 
                 result = false;
@@ -869,7 +869,7 @@ namespace NuGet.Commands
                 await _logger.LogAsync(
                     RestoreLogMessage.CreateError(
                         NuGetLogCode.NU1011,
-                        Strings.Error_CentralPackageVersions_FloatingVersionsAreNotAllowed));
+                        Strings.Error_CentralPackageManagement_FloatingVersionsNotAllowed));
 
                 result = false;
             }
@@ -885,7 +885,7 @@ namespace NuGet.Commands
                             NuGetLogCode.NU1013,
                             string.Format(
                                 CultureInfo.CurrentCulture,
-                                Strings.Error_CentralPackageVersions_VersionOverrideDisabled,
+                                Strings.Error_CentralPackageManagement_VersionOverrideNotAllowed,
                                 item.Name)));
                 }
             }
