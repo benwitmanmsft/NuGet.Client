@@ -130,25 +130,25 @@ Copyright (c) .NET Foundation. All rights reserved.
   </ItemGroup>
 
   <!-- Tasks -->
-  <UsingTask TaskName="NuGet.Build.Tasks.RestoreTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.WriteRestoreGraphTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectJsonPathTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestorePackageReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetCentralPackageVersionsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestorePackageDownloadsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreFrameworkReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreNuGetAuditSuppressionsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreDotnetCliToolsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetProjectTargetFrameworksTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreSolutionProjectsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreSettingsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.WarnForInvalidProjectsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetReferenceNearestTargetFrameworkTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectStyleTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.NuGetMessageTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.CheckForDuplicateNuGetItemsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.GetGlobalPropertyValueTask" AssemblyFile="$(RestoreTaskAssemblyFile)" />
+  <UsingTask TaskName="NuGet.Build.Tasks.RestoreTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.WriteRestoreGraphTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectJsonPathTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestorePackageReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetCentralPackageVersionsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestorePackageDownloadsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreFrameworkReferencesTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreNuGetAuditSuppressionsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreDotnetCliToolsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetProjectTargetFrameworksTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreSolutionProjectsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreSettingsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.WarnForInvalidProjectsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetReferenceNearestTargetFrameworkTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetRestoreProjectStyleTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.NuGetMessageTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.CheckForDuplicateNuGetItemsTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
+  <UsingTask TaskName="NuGet.Build.Tasks.GetGlobalPropertyValueTask" AssemblyFile="$(RestoreTaskAssemblyFile)" PrecomputationMode="Static" />
 
   <!--
     ============================================================

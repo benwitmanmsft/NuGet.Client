@@ -100,7 +100,7 @@ $MSBuildExe = Get-MSBuildExe
 
 Invoke-BuildStep 'Running Restore' {
     # Restore
-    $restoreArgs = "build\build.proj", "/t:RestoreVS", "/p:Configuration=$Configuration", "/p:ReleaseLabel=$ReleaseLabel", "/p:IncludeApex=$IncludeApex", "/v:m", "/m"
+    $restoreArgs = "build\build.proj", "/t:RestoreVS", "/p:HideWarningsAndErrors=true", "/p:Configuration=$Configuration", "/p:ReleaseLabel=$ReleaseLabel", "/p:IncludeApex=$IncludeApex", "/v:m", "/m"
 
     if ($BuildNumber)
     {
@@ -126,7 +126,7 @@ Invoke-BuildStep 'Running Restore' {
 
 Invoke-BuildStep $VSMessage {
 
-    $buildArgs = 'build\build.proj', "/t:$VSTarget", "/p:Configuration=$Configuration", "/p:ReleaseLabel=$ReleaseLabel", "/p:IncludeApex=$IncludeApex", '/v:m', '/m'
+    $buildArgs = 'build\build.proj', "/t:$VSTarget", "/p:HideWarningsAndErrors=true", "/p:Configuration=$Configuration", "/p:ReleaseLabel=$ReleaseLabel", "/p:IncludeApex=$IncludeApex", '/v:m', '/m'
 
     if ($BuildNumber)
     {
