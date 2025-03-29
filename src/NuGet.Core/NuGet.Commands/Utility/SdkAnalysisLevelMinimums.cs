@@ -13,17 +13,17 @@ namespace NuGet.Commands
         /// <summary>
         /// Minimum SDK Analysis Level required to enable HTTP Errors is 9.0.100.
         /// </summary>
-        internal static readonly NuGetVersion HttpErrorSdkAnalysisLevelMinimumValue = new("9.0.100");
+        internal static readonly NuGetVersion V9_0_100 = new("9.0.100");
 
         /// <summary>
-        /// Minimum SDK Analysis Level required for warning for packages and projects that cannot be pruned.
+        /// Minimum SDK Analysis Level required for:
+        /// <list type="bullet">
+        /// <item>warning for packages and projects that cannot be pruned</item>
+        /// <item>enabling the new algorithm for lock files</item>
+        /// <item>error when CPM not used and PackageReference does not have version</item>
+        /// </list>
         /// </summary>
-        internal static readonly NuGetVersion PruningWarnings = new("10.0.100");
-
-        /// <summary>
-        /// Minimum SDK Analysis Level required for enabling the new algorithm for lock files
-        /// </summary>
-        internal static readonly NuGetVersion NewResolverWithLockFiles = new("10.0.100");
+        internal static readonly NuGetVersion V10_0_100 = new("10.0.100");
 
         /// <summary>
         /// Determines whether the feature is enabled based on the SDK analysis level.
