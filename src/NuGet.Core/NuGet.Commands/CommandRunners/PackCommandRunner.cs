@@ -514,30 +514,20 @@ namespace NuGet.Commands
                 builder.Tags.AddRange(spec.Tags);
             }
 
-            if (spec.TargetFrameworks.Any())
+            foreach (TargetFrameworkInformation framework in spec.TargetFrameworks)
             {
-                foreach (TargetFrameworkInformation framework in spec.TargetFrameworks)
+                if (framework.FrameworkName.IsUnsupported)
                 {
-                    if (framework.FrameworkName.IsUnsupported)
-                    {
-                        throw new PackagingException(
-                            NuGetLogCode.NU5003,
-                            string.Format(
-                                CultureInfo.CurrentCulture,
-                                Strings.Error_InvalidTargetFramework,
-                                framework.FrameworkName));
-                    }
+                    throw new PackagingException(
+                        NuGetLogCode.NU5003,
+                        string.Format(
+                            CultureInfo.CurrentCulture,
+                            Strings.Error_InvalidTargetFramework,
+                            framework.FrameworkName));
+                }
 
-                    builder.TargetFrameworks.Add(framework.FrameworkName);
-                    AddDependencyGroups(framework.Dependencies.Concat(spec.Dependencies), framework.FrameworkName, builder);
-                }
-            }
-            else
-            {
-                if (spec.Dependencies.Any())
-                {
-                    AddDependencyGroups(spec.Dependencies, NuGetFramework.AnyFramework, builder);
-                }
+                builder.TargetFrameworks.Add(framework.FrameworkName);
+                AddDependencyGroups(framework.Dependencies, framework.FrameworkName, builder);
             }
 
             builder.PackageTypes = new Collection<PackageType>(spec.PackOptions?.PackageType?.ToList() ?? new List<PackageType>());

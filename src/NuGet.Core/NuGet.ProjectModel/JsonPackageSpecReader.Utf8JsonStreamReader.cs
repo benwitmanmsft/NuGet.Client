@@ -189,7 +189,6 @@ namespace NuGet.ProjectModel
                     {
                         ReadScripts(ref jsonReader, packageSpec);
                     }
-#pragma warning restore CS0612 // Type or member is
                     else if (jsonReader.ValueTextEquals(DependenciesPropertyName))
                     {
                         ReadDependencies(
@@ -198,6 +197,7 @@ namespace NuGet.ProjectModel
                             filePath,
                             isGacOrFrameworkReference: false);
                     }
+#pragma warning restore CS0612 // Type or member is
                     else if (jsonReader.ValueTextEquals(FrameworksPropertyName))
                     {
                         ReadFrameworks(ref jsonReader, packageSpec);

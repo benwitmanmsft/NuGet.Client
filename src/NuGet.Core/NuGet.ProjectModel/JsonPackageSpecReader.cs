@@ -138,7 +138,6 @@ namespace NuGet.ProjectModel
                     case "copyright":
                         packageSpec.Copyright = jsonReader.ReadNextTokenAsString();
                         break;
-#pragma warning restore CS0612 // Type or member is obsolete
 
                     case "dependencies":
                         ReadDependencies(
@@ -148,7 +147,6 @@ namespace NuGet.ProjectModel
                             isGacOrFrameworkReference: false);
                         break;
 
-#pragma warning disable CS0612 // Type or member is obsolete
                     case "description":
                         packageSpec.Description = jsonReader.ReadNextTokenAsString();
                         break;

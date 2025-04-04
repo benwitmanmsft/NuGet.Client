@@ -338,7 +338,7 @@ namespace NuGet.Commands
                 var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Strings.PropertyNotAllowed,
-                    nameof(spec.Dependencies));
+                    "dependencies");
 
                 throw RestoreSpecException.Create(message, files);
             }
@@ -432,8 +432,7 @@ namespace NuGet.Commands
 
         private static IEnumerable<LibraryDependency> GetAllDependencies(PackageSpec spec)
         {
-            return spec.Dependencies
-                .Concat(spec.TargetFrameworks.SelectMany(f => f.Dependencies));
+            return spec.TargetFrameworks.SelectMany(f => f.Dependencies);
         }
     }
 }

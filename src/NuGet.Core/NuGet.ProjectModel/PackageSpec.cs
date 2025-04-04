@@ -46,10 +46,10 @@ namespace NuGet.ProjectModel
             )
         {
             TargetFrameworks = frameworks;
+#pragma warning disable CS0612 // Type or member is obsolete
             Dependencies = dependencies ?? new List<LibraryDependency>();
             RuntimeGraph = runtimeGraph ?? RuntimeGraph.Empty;
             RestoreSettings = restoreSettings ?? new ProjectRestoreSettings();
-#pragma warning disable CS0612 // Type or member is obsolete
             Authors = authors ?? Array.Empty<string>();
             Owners = owners ?? Array.Empty<string>();
             Tags = tags ?? Array.Empty<string>();
@@ -142,6 +142,7 @@ namespace NuGet.ProjectModel
         /// List of dependencies that apply to all frameworks.
         /// <see cref="ProjectStyle.PackageReference"/> based projects must not use this list and instead use the one in the <see cref="TargetFrameworks"/> property which is a list of the <see cref="TargetFrameworkInformation"/> type.
         /// </summary>
+        [Obsolete]
         public IList<LibraryDependency> Dependencies { get; set; }
 
         public IList<TargetFrameworkInformation> TargetFrameworks { get; private set; }
@@ -188,8 +189,8 @@ namespace NuGet.ProjectModel
             hashCode.AddDictionary(Scripts);
             hashCode.AddDictionary(PackInclude);
             hashCode.AddObject(PackOptions);
-#pragma warning restore CS0612 // Type or member is obsolete
             hashCode.AddSequence(Dependencies);
+#pragma warning restore CS0612 // Type or member is obsolete
             hashCode.AddSequence(TargetFrameworks);
             hashCode.AddObject(RuntimeGraph);
             hashCode.AddObject(RestoreMetadata);
@@ -238,8 +239,8 @@ namespace NuGet.ProjectModel
                    EqualityUtility.DictionaryOfSequenceEquals(Scripts, other.Scripts) &&
                    EqualityUtility.DictionaryEquals(PackInclude, other.PackInclude, (s, o) => StringComparer.Ordinal.Equals(s, o)) &&
                    EqualityUtility.EqualsWithNullCheck(PackOptions, other.PackOptions) &&
-#pragma warning restore CS0612 // Type or member is obsolete
                    EqualityUtility.OrderedEquals(Dependencies, other.Dependencies, dep => dep.Name, StringComparer.OrdinalIgnoreCase) &&
+#pragma warning restore CS0612 // Type or member is obsolete
                    EqualityUtility.OrderedEquals(TargetFrameworks, other.TargetFrameworks, tfm => tfm.TargetAlias, StringComparer.OrdinalIgnoreCase) &&
                    EqualityUtility.EqualsWithNullCheck(RuntimeGraph, other.RuntimeGraph) &&
                    EqualityUtility.EqualsWithNullCheck(RestoreMetadata, other.RestoreMetadata);
@@ -263,10 +264,10 @@ namespace NuGet.ProjectModel
 
             return new PackageSpec(
                 targetFrameworks,
+#pragma warning disable CS0612 // Type or member is obsolete
                 Dependencies?.ToList(),
                 RuntimeGraph?.Clone(),
                 RestoreSettings?.Clone(),
-#pragma warning disable CS0612 // Type or member is obsolete
                 (string[])Authors?.Clone(),
                 (string[])Owners?.Clone(),
                 (string[])Tags?.Clone(),

@@ -195,9 +195,9 @@ namespace NuGet.ProjectModel.Test
             packageSpec.PackInclude.Add(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 
             packageSpec.PackOptions = CreatePackOptions();
-#pragma warning restore CS0612 // Type or member is obsolete
 
             packageSpec.Dependencies = new List<LibraryDependency>() { CreateLibraryDependency(), CreateLibraryDependency() };
+#pragma warning restore CS0612 // Type or member is obsolete
             packageSpec.RuntimeGraph = CreateRuntimeGraph();
             packageSpec.RestoreSettings = CreateProjectRestoreSettings();
             return packageSpec;
@@ -314,6 +314,7 @@ namespace NuGet.ProjectModel.Test
                 packageSpec.ContentFiles.Add("New fnacy content file");
             }
 
+            [Obsolete]
             public static void ModifyDependencies(PackageSpec packageSpec)
             {
                 packageSpec.Dependencies.Add(CreateLibraryDependency());
@@ -988,6 +989,7 @@ namespace NuGet.ProjectModel.Test
         [InlineData("A;b", "a;B", true)]
         [InlineData("a;b;c", "c;a;B", true)]
         [InlineData("a;b;c;d", "c;a;b", false)]
+        [Obsolete]
         public void PackageSpec_Equals_WithDependencies(string left, string right, bool expected)
         {
             var leftSide = new PackageSpec(new List<TargetFrameworkInformation>())

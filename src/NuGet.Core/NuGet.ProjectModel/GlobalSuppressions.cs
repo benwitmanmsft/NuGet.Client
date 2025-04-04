@@ -64,7 +64,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Build", "CA2227:Change 'Dependencies' to be read-only by removing the property setter.", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackagesLockFileTarget.Dependencies")]
 [assembly: SuppressMessage("Build", "CA1819:Properties should not return arrays", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.Authors")]
 [assembly: SuppressMessage("Build", "CA2227:Change 'ContentFiles' to be read-only by removing the property setter.", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.ContentFiles")]
-[assembly: SuppressMessage("Build", "CA2227:Change 'Dependencies' to be read-only by removing the property setter.", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.Dependencies")]
 [assembly: SuppressMessage("Build", "CA1056:Change the type of property PackageSpec.IconUrl from string to System.Uri.", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.IconUrl")]
 [assembly: SuppressMessage("Build", "CA1056:Change the type of property PackageSpec.LicenseUrl from string to System.Uri.", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.LicenseUrl")]
 [assembly: SuppressMessage("Build", "CA1819:Properties should not return arrays", Justification = "<Pending>", Scope = "member", Target = "~P:NuGet.ProjectModel.PackageSpec.Owners")]

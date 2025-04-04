@@ -925,7 +925,7 @@ namespace NuGet.Build.Tasks.Pack
                 }
 
                 // First, add each of the generic package dependencies
-                AddDependencies(assetsFile.PackageSpec.Dependencies, dependenciesByFramework, framework, assetsFile, packageSpecificNoWarnProperties);
+                AddDependencies([], dependenciesByFramework, framework, assetsFile, packageSpecificNoWarnProperties);
 
                 // Next, the framework-specific dependencies
                 var newFrameworkDependencies = AddDependencies(framework.Dependencies, dependenciesByFramework, framework, assetsFile, packageSpecificNoWarnProperties);

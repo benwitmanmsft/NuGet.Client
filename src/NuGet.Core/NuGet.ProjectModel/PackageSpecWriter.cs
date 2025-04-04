@@ -63,12 +63,12 @@ namespace NuGet.ProjectModel
             SetMSBuildMetadata(writer, packageSpec, environmentVariableReader);
 #pragma warning disable CS0612 // Type or member is obsolete
             SetDictionaryValues(writer, "scripts", packageSpec.Scripts);
-#pragma warning restore CS0612 // Type or member is obsolete
 
             if (packageSpec.Dependencies.Count > 0)
             {
                 SetDependencies(writer, packageSpec.Dependencies);
             }
+#pragma warning restore CS0612 // Type or member is obsolete
 
             SetFrameworks(writer, packageSpec.TargetFrameworks, hashing);
 
