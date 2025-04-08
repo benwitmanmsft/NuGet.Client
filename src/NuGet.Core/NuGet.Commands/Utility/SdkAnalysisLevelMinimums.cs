@@ -31,18 +31,24 @@ namespace NuGet.Commands
         /// <param name="sdkAnalysisLevel">The project SdkAnalysisLevel value </param>
         /// <param name="usingMicrosoftNetSdk">Is it SDK project or not</param>
         /// <param name="minSdkVersion">The minimum version of the SDK required for the feature to be enabled.</param>
+        /// <param name="nonSdkProjectDefault">The default value for non-SDK projects that have not set an sdkAnalysisLevel.</param>
         /// <returns>Returns true if the feature should be enabled based on the given parameters; otherwise, false.</returns>
-        public static bool IsEnabled(NuGetVersion sdkAnalysisLevel, bool usingMicrosoftNetSdk, NuGetVersion minSdkVersion)
+        internal static bool IsEnabled(NuGetVersion sdkAnalysisLevel, bool usingMicrosoftNetSdk, NuGetVersion minSdkVersion, bool nonSdkProjectDefault)
         {
-            if (sdkAnalysisLevel != null && sdkAnalysisLevel >= minSdkVersion ||
-                sdkAnalysisLevel == null && usingMicrosoftNetSdk == false)
+            if (!usingMicrosoftNetSdk && sdkAnalysisLevel == null)
             {
-                // SdkAnalysisLevel >= minSdkVersion or SdkAnalysisLevel is null and not using Microsoft NET Sdk
+                // For non-SDK style projects, some features are on by default, others off.
+                return nonSdkProjectDefault;
+            }
+
+            if (sdkAnalysisLevel != null && sdkAnalysisLevel >= minSdkVersion)
+            {
+                // SdkAnalysisLevel >= minSdkVersion
                 return true;
             }
             else
             {
-                // SdkAnalysisLevel < minSdkVersion or SdkAnalysisLevel is null and using Microsoft NET Sdk
+                // SdkAnalysisLevel < minSdkVersion or SdkAnalysisLevel is null
                 return false;
             }
         }

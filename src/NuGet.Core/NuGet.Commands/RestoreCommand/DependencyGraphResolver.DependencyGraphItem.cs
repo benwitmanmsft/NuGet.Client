@@ -174,7 +174,8 @@ namespace NuGet.Commands
                     if (SdkAnalysisLevelMinimums.IsEnabled(
                         projectRestoreMetadata.SdkAnalysisLevel,
                         projectRestoreMetadata.UsingMicrosoftNETSdk,
-                        SdkAnalysisLevelMinimums.V10_0_100))
+                        SdkAnalysisLevelMinimums.V10_0_100,
+                        nonSdkProjectDefault: true))
                     {
                         logger.Log(RestoreLogMessage.CreateWarning(NuGetLogCode.NU1511, string.Format(CultureInfo.CurrentCulture, Strings.Error_RestorePruningProjectReference, dependency.Name)));
                     }
@@ -187,7 +188,8 @@ namespace NuGet.Commands
                     if (SdkAnalysisLevelMinimums.IsEnabled(
                         projectRestoreMetadata.SdkAnalysisLevel,
                         projectRestoreMetadata.UsingMicrosoftNETSdk,
-                        SdkAnalysisLevelMinimums.V10_0_100))
+                        SdkAnalysisLevelMinimums.V10_0_100,
+                        nonSdkProjectDefault: true))
                     {
                         logger.Log(RestoreLogMessage.CreateWarning(NuGetLogCode.NU1510, string.Format(CultureInfo.CurrentCulture, Strings.Error_RestorePruningDirectPackageReference, dependency.Name)));
                     }

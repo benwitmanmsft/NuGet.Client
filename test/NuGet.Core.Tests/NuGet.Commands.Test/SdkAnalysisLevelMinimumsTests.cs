@@ -8,38 +8,42 @@ namespace NuGet.Commands.Test
 {
     public class SdkAnalysisLevelMinimumsTests
     {
-        [Fact]
-        public void IsEnabled_WhenSdkAnalysisLevelIsNullAndUsingMicrosoftNetSdkIsFalse_ShouldReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsEnabled_WhenSdkAnalysisLevelIsNullAndUsingMicrosoftNetSdkIsFalse_ShouldReturnTrue(bool nonSdkProjectDefault)
         {
-            var result = SdkAnalysisLevelMinimums.IsEnabled(null, false, new NuGetVersion("9.0.100"));
-            Assert.True(result);
+            var result = SdkAnalysisLevelMinimums.IsEnabled(null, false, new NuGetVersion("9.0.100"), nonSdkProjectDefault);
+            Assert.Equal(nonSdkProjectDefault, result);
         }
 
-        [Fact]
-        public void IsEnabled_WhenSdkAnalysisLevelIsNullAndUsingMicrosoftNetSdkIsTrue_ShouldReturnFalse()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsEnabled_WhenSdkAnalysisLevelIsNullAndUsingMicrosoftNetSdkIsTrue_ShouldReturnFalse(bool nonSdkProjectDefault)
         {
-            var result = SdkAnalysisLevelMinimums.IsEnabled(null, true, new NuGetVersion("9.0.100"));
+            var result = SdkAnalysisLevelMinimums.IsEnabled(null, true, new NuGetVersion("9.0.100"), nonSdkProjectDefault);
             Assert.False(result);
         }
 
         [Fact]
         public void IsEnabled_WhenSdkAnalysisLevelIsLessThanMinSdkVersion_ShouldReturnFalse()
         {
-            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("8.0.900"), true, new NuGetVersion("9.0.100"));
+            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("8.0.900"), true, new NuGetVersion("9.0.100"), true);
             Assert.False(result);
         }
 
         [Fact]
         public void IsEnabled_WhenSdkAnalysisLevelIsEqualToMinSdkVersion_ShouldReturnTrue()
         {
-            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("9.0.100"), true, new NuGetVersion("9.0.100"));
+            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("9.0.100"), true, new NuGetVersion("9.0.100"), true);
             Assert.True(result);
         }
 
         [Fact]
         public void IsEnabled_WhenSdkAnalysisLevelIsGreaterThanMinSdkVersion_ShouldReturnTrue()
         {
-            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("9.0.101"), true, new NuGetVersion("9.0.100"));
+            var result = SdkAnalysisLevelMinimums.IsEnabled(new NuGetVersion("9.0.101"), true, new NuGetVersion("9.0.100"), true);
             Assert.True(result);
         }
     }

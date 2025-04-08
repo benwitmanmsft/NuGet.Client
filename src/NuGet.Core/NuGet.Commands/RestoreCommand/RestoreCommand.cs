@@ -168,10 +168,15 @@ namespace NuGet.Commands
             _enableNewDependencyResolver = _request.Project.RuntimeGraph.Supports.Count == 0 && ShouldUseNewResolverWithLockFile(_isLockFileEnabled, _request.Project) && !_request.Project.RestoreMetadata.UseLegacyDependencyResolver;
         }
 
-        // Use the new lock file if lock files are not enabled, or if lock files are enabled and .NET 10 SDK is used. Note that the legacy fallback is *false* in this case.
+        // Use the new resolver if lock files are not enabled, or if lock files are enabled and .NET 10 SDK is used. Note that the legacy fallback is *false* in this case.
         private static bool ShouldUseNewResolverWithLockFile(bool isLockFileEnabled, PackageSpec project)
         {
-            return !isLockFileEnabled || (project.RestoreMetadata.UsingMicrosoftNETSdk && SdkAnalysisLevelMinimums.IsEnabled(project.RestoreMetadata.SdkAnalysisLevel, project.RestoreMetadata.UsingMicrosoftNETSdk, SdkAnalysisLevelMinimums.V10_0_100));
+            return !isLockFileEnabled ||
+                (project.RestoreMetadata.UsingMicrosoftNETSdk && SdkAnalysisLevelMinimums.IsEnabled(
+                    project.RestoreMetadata.SdkAnalysisLevel,
+                    project.RestoreMetadata.UsingMicrosoftNETSdk,
+                    SdkAnalysisLevelMinimums.V10_0_100,
+                    nonSdkProjectDefault: true));
         }
 
         public Task<RestoreResult> ExecuteAsync()
@@ -443,7 +448,8 @@ namespace NuGet.Commands
                     {
                         var isErrorEnabled = SdkAnalysisLevelMinimums.IsEnabled(_request.Project.RestoreMetadata.SdkAnalysisLevel,
                             _request.Project.RestoreMetadata.UsingMicrosoftNETSdk,
-                            SdkAnalysisLevelMinimums.V9_0_100);
+                            SdkAnalysisLevelMinimums.V9_0_100,
+                            nonSdkProjectDefault: true);
 
                         if (isErrorEnabled)
                         {
@@ -759,7 +765,11 @@ namespace NuGet.Commands
                 return true;
             }
 
-            if (!SdkAnalysisLevelMinimums.IsEnabled(project.RestoreMetadata.SdkAnalysisLevel, project.RestoreMetadata.UsingMicrosoftNETSdk, SdkAnalysisLevelMinimums.V10_0_100))
+            if (!SdkAnalysisLevelMinimums.IsEnabled(
+                project.RestoreMetadata.SdkAnalysisLevel,
+                project.RestoreMetadata.UsingMicrosoftNETSdk,
+                SdkAnalysisLevelMinimums.V10_0_100,
+                nonSdkProjectDefault: false))
             {
                 return true;
             }
