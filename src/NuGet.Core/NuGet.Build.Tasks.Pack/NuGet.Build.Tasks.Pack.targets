@@ -19,10 +19,10 @@ Copyright (c) .NET Foundation. All rights reserved.
   </PropertyGroup>
 
   <!-- Tasks -->
-  <UsingTask TaskName="NuGet.Build.Tasks.Pack.PackTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.Pack.GetPackOutputItemsTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" />
+  <UsingTask TaskName="NuGet.Build.Tasks.Pack.PackTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" PrecomputationMode="Dynamic" />
+  <UsingTask TaskName="NuGet.Build.Tasks.Pack.GetPackOutputItemsTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" PrecomputationMode="Static" />
   <UsingTask TaskName="NuGet.Build.Tasks.GetProjectTargetFrameworksTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" />
-  <UsingTask TaskName="NuGet.Build.Tasks.Pack.GetProjectReferencesFromAssetsFileTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" />
+  <UsingTask TaskName="NuGet.Build.Tasks.Pack.GetProjectReferencesFromAssetsFileTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" PrecomputationMode="Static" />
   <UsingTask TaskName="NuGet.Build.Tasks.Pack.IsPackableFalseWarningTask" AssemblyFile="$(NuGetPackTaskAssemblyFile)" />
 
   <PropertyGroup>
@@ -211,15 +211,24 @@ Copyright (c) .NET Foundation. All rights reserved.
   <Target Name="GenerateNuspec"
           Condition="'$(IsPackable)' == 'true'"
           Inputs="@(NuGetPackInput)" Outputs="@(NuGetPackOutput)"
-          DependsOnTargets="$(GenerateNuspecDependsOn);_CalculateInputsOutputsForPack;_GetProjectReferenceVersions;_InitializeNuspecRepositoryInformationProperties">
+          DependsOnTargets="$(GenerateNuspecDependsOn);_CalculateInputsOutputsForPack;_GetProjectReferenceVersions;_InitializeNuspecRepositoryInformationProperties"
+          Deferred="Item:_PackageFiles:r">
 
     <ConvertToAbsolutePath Condition="$(NuspecFile) != ''" Paths="$(NuspecFile)">
       <Output TaskParameter="AbsolutePaths" PropertyName="NuspecFileAbsolutePath" />
     </ConvertToAbsolutePath>
 
+    <ItemGroup>
+      <_PackageFilesDirectories Deferred="true" Include="@(_PackageFiles)" Condition="'%(_PackageFiles.PackType)' == 'Directory'" />
+      <_PackageFilesDirectoriesFiles Deferred="true" Include="%(_PackageFilesDirectories.FullPath)/**/*" Condition="'@(_PackageFilesDirectories->Count())' != 0">
+        <PackagePath>%(_PackageFilesDirectories.PackagePath)</PackagePath>
+      </_PackageFilesDirectoriesFiles>
+      <_PackageFilesFinal Deferred="true" Include="@(_PackageFiles);@(_PackageFilesDirectoriesFiles)" Condition="'%(_PackageFiles.PackType)' != 'Directory'" />
+    </ItemGroup>
+
     <!-- Call Pack -->
     <PackTask PackItem="$(PackProjectInputFile)"
-              PackageFiles="@(_PackageFiles)"
+              PackageFiles="@(_PackageFilesFinal)"
               PackageFilesToExclude="@(_PackageFilesToExclude)"
               PackageVersion="$(PackageVersion)"
               PackageId="$(PackageId)"
@@ -261,6 +270,7 @@ Copyright (c) .NET Foundation. All rights reserved.
               BuildOutputFolders="$(BuildOutputTargetFolder)"
               ContentTargetFolders="$(ContentTargetFolders)"
               RestoreOutputPath="$(RestoreOutputAbsolutePath)"
+              PrecomputeInputs="$(RestoreOutputAbsolutePath)#dir"
               NuspecFile="$(NuspecFileAbsolutePath)"
               NuspecBasePath="$(NuspecBasePath)"
               NuspecProperties="$(NuspecProperties)"
@@ -426,9 +436,11 @@ Copyright (c) .NET Foundation. All rights reserved.
     </ItemGroup>
   </Target>
 
-  <Target Name ="_GetFrameworkAssemblyReferences" DependsOnTargets="ResolveReferences" Returns="@(TfmSpecificFrameworkAssemblyReferences)">
+  <Target Name ="_GetFrameworkAssemblyReferences" DependsOnTargets="ResolveReferences" Returns="@(TfmSpecificFrameworkAssemblyReferences)" 
+    DeferredReturns="Item:TfmSpecificFrameworkAssemblyReferences"
+    Deferred="Item:ReferencePath:r;Property:TargetFramework:r;Item:TfmSpecificFrameworkAssemblyReferences:w">
     <ItemGroup>
-      <TfmSpecificFrameworkAssemblyReferences Include="@(ReferencePath->'%(OriginalItemSpec)')"
+      <TfmSpecificFrameworkAssemblyReferences Deferred="true" Include="@(ReferencePath->'%(OriginalItemSpec)')"
         Condition="'%(ReferencePath.Pack)' != 'false' AND '%(ReferencePath.ResolvedFrom)' == '{TargetFrameworkDirectory}'">
         <TargetFramework>$(TargetFramework)</TargetFramework>
       </TfmSpecificFrameworkAssemblyReferences>
