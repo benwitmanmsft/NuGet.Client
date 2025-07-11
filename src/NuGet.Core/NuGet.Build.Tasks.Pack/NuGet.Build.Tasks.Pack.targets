@@ -361,10 +361,17 @@ Copyright (c) .NET Foundation. All rights reserved.
 
   <Target Name="_WalkEachTargetPerFramework">
     <ItemGroup>
-        <_ProjectsWithTFM Include="$(MSBuildProjectFullPath)" AdditionalProperties="TargetFramework=%(_TargetFrameworks.Identity)" />
-        <_ProjectsWithTFMNoBuild Include="$(MSBuildProjectFullPath)" AdditionalProperties="TargetFramework=%(_TargetFrameworks.Identity);BuildProjectReferences=false" />
-
+        <_ProjectsWithTFM Include="$(MSBuildProjectFullPath)" />
+        <_ProjectsWithTFMNoBuild Include="$(MSBuildProjectFullPath)" />
     </ItemGroup>
+
+    <ItemGroup Condition="'$(IsCrossTargetingBuild)' == 'true'">
+        <_ProjectsWithTFM Update="$(MSBuildProjectFullPath)" AdditionalProperties="TargetFramework=%(_TargetFrameworks.Identity)" />
+
+        <!-- BuildProjectReferences=false would cause a rebuild of dependencies but also would also us re-run a bunch of targets... what to do... -->
+        <_ProjectsWithTFMNoBuild Update="$(MSBuildProjectFullPath)" AdditionalProperties="TargetFramework=%(_TargetFrameworks.Identity)" />
+    </ItemGroup>
+
     <MSBuild
       Condition="'$(IncludeBuildOutput)' == 'true'"
       Projects="@(_ProjectsWithTFM)"
