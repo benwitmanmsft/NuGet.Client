@@ -184,7 +184,8 @@ Copyright (c) .NET Foundation. All rights reserved.
     <ItemGroup>
       <!--This catches changes to properties-->
       <NuGetPackInput Include="$(MSBuildAllProjects)"/>
-      <NuGetPackInput Include="@(_PackageFiles)"/>
+      <NuGetPackInput Include="@(_PackageFiles)" Condition="%(_PackageFiles.PackType) != 'Directory'"/>
+      <NuGetPackInput Include="@(_PackageFiles->'%(FullPath)#dir')" Condition="%(_PackageFiles.PackType) == 'Directory'"/>
       <NuGetPackInput Include="@(_PackageFilesToExclude)"/>
       <NuGetPackInput Include="@(_BuildOutputInPackage->'%(FinalOutputPath)')"/>
       <NuGetPackInput Include="@(_TargetPathsToSymbols->'%(FinalOutputPath)')"/>
