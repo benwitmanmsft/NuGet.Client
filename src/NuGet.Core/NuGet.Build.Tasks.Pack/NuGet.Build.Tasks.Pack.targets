@@ -291,6 +291,7 @@ Copyright (c) .NET Foundation. All rights reserved.
               Readme="$(PackageReadmeFile)"
               Deterministic="$(Deterministic)"
               PackageIcon="$(PackageIcon)"
+              PrecomputeInputs="@(_BuildOutputInPackage)"
               />
   </Target>
 
