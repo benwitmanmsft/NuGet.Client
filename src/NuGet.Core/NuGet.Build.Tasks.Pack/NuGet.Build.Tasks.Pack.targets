@@ -185,6 +185,7 @@ Copyright (c) .NET Foundation. All rights reserved.
       <!--This catches changes to properties-->
       <NuGetPackInput Include="$(MSBuildAllProjects)"/>
       <NuGetPackInput Include="$(ProjectAssetsFile)"/>
+      <NuGetPackInput Include="@(_PackageFilesDeps)" />
       <NuGetPackInput Include="@(_PackageFiles)" Condition="%(_PackageFiles.PackType) != 'Directory'"/>
       <NuGetPackInput Include="@(_PackageFiles->'%(FullPath)#dir')" Condition="%(_PackageFiles.PackType) == 'Directory'"/>
       <NuGetPackInput Include="@(_PackageFilesToExclude)"/>
@@ -215,7 +216,7 @@ Copyright (c) .NET Foundation. All rights reserved.
           Condition="'$(IsPackable)' == 'true'"
           Inputs="@(NuGetPackInput)" Outputs="@(NuGetPackOutput)"
           DependsOnTargets="$(GenerateNuspecDependsOn);_CalculateInputsOutputsForPack;_GetProjectReferenceVersions;_InitializeNuspecRepositoryInformationProperties"
-          Deferred="Item:_PackageFiles:r">
+          Deferred="Item:_PackageFiles:r;Item:_PackageFilesDeferred:r">
 
     <ConvertToAbsolutePath Condition="$(NuspecFile) != ''" Paths="$(NuspecFile)">
       <Output TaskParameter="AbsolutePaths" PropertyName="NuspecFileAbsolutePath" />
@@ -226,7 +227,7 @@ Copyright (c) .NET Foundation. All rights reserved.
       <_PackageFilesDirectoriesFiles Deferred="true" Include="%(_PackageFilesDirectories.FullPath)/**/*" Condition="'@(_PackageFilesDirectories->Count())' != 0">
         <PackagePath>%(_PackageFilesDirectories.PackagePath)</PackagePath>
       </_PackageFilesDirectoriesFiles>
-      <_PackageFilesFinal Deferred="true" Include="@(_PackageFiles);@(_PackageFilesDirectoriesFiles)" Condition="'%(_PackageFiles.PackType)' != 'Directory'" />
+      <_PackageFilesFinal Deferred="true" Include="@(_PackageFiles);@(_PackageFilesDirectoriesFiles);@(_PackageFilesDeferred)" Condition="'%(_PackageFiles.PackType)' != 'Directory'" />
     </ItemGroup>
 
     <!-- Call Pack -->
@@ -362,7 +363,8 @@ Copyright (c) .NET Foundation. All rights reserved.
     </ItemGroup>
   </Target>
 
-  <Target Name="_WalkEachTargetPerFramework">
+  <Target Name="_WalkEachTargetPerFramework"
+      Deferred="Item:_PackageFilesDeferred:w">
     <ItemGroup>
         <_ProjectsWithTFM Include="$(MSBuildProjectFullPath)" />
         <_ProjectsWithTFMNoBuild Include="$(MSBuildProjectFullPath)" />
@@ -394,7 +396,23 @@ Copyright (c) .NET Foundation. All rights reserved.
 
       <Output
           TaskParameter="TargetOutputs"
-          ItemName="_PackageFiles"/>
+          ItemName="_GetTfmSpecificContentForPackageOutput"/>
+    </MSBuild>
+
+    <ItemGroup>
+      <_PackageFiles Include="@(_GetTfmSpecificContentForPackageOutput)" Condition="'%(IsDeps)' != 'true'"/>
+      <_PackageFilesDeps Include="@(_GetTfmSpecificContentForPackageOutput)" Condition="'%(IsDeps)' == 'true'"/>
+    </ItemGroup>
+
+    <MSBuild
+      Condition="'$(TargetsForTfmSpecificContentInPackage)' != ''"
+      Projects="@(_ProjectsWithTFM)"
+      Targets="_GetTfmSpecificContentForPackageDeferred"
+      BuildInParallel="$(BuildInParallel)">
+
+      <Output
+          TaskParameter="TargetOutputs"
+          ItemName="_PackageFilesDeferred"/>
     </MSBuild>
 
     <MSBuild
@@ -477,6 +495,23 @@ Copyright (c) .NET Foundation. All rights reserved.
         <NuGetRecursiveDir>%(TfmSpecificPackageFile.RecursiveDir)</NuGetRecursiveDir>
         <BuildAction>%(TfmSpecificPackageFile.BuildAction)</BuildAction>
       </TfmSpecificPackageFileWithRecursiveDir>
+      <TfmSpecificPackageFileWithRecursiveDir Include="@(TfmSpecificPackageFileDeps)">
+        <IsDeps>true</IsDeps>
+      </TfmSpecificPackageFileWithRecursiveDir>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_GetTfmSpecificContentForPackageDeferred"
+          DependsOnTargets="$(TargetsForTfmSpecificContentInPackageDeferred)"
+          DeferredReturns="Item:TfmSpecificPackageFileWithRecursiveDirDeferred"
+          Returns="@(TfmSpecificPackageFileWithRecursiveDirDeferred)"
+          Deferred="Item:TfmSpecificPackageFileDeferred:r">
+    <!-- The below workaround needs to be done due to msbuild bug https://github.com/Microsoft/msbuild/issues/3121 -->
+    <ItemGroup>
+      <TfmSpecificPackageFileWithRecursiveDirDeferred Deferred="true" Include="@(TfmSpecificPackageFileDeferred)">
+        <NuGetRecursiveDir>%(TfmSpecificPackageFileDeferred.RecursiveDir)</NuGetRecursiveDir>
+        <BuildAction>%(TfmSpecificPackageFileDeferred.BuildAction)</BuildAction>
+      </TfmSpecificPackageFileWithRecursiveDirDeferred>
     </ItemGroup>
   </Target>
 
