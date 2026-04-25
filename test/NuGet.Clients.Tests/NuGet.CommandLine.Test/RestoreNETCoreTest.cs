@@ -9822,9 +9822,9 @@ namespace NuGet.CommandLine.Test
                 };
 
                 var projectA = SimpleTestProjectContext.CreateNETCore(
-                   "projectA",
-                   pathContext.SolutionRoot,
-                   NuGetFramework.Parse("netcoreapp2.0"));
+                    "projectA",
+                    pathContext.SolutionRoot,
+                    NuGetFramework.Parse("netcoreapp2.0"));
                 projectA.Properties.Add(ProjectBuildProperties.ManagePackageVersionsCentrally, "true");
                 projectA.Properties.Add(ProjectBuildProperties.CentralPackageTransitivePinningEnabled, "true");
 
@@ -10073,9 +10073,9 @@ namespace NuGet.CommandLine.Test
                 };
 
                 var projectA = SimpleTestProjectContext.CreateNETCore(
-                   "projectA",
-                   pathContext.SolutionRoot,
-                   framework);
+                    "projectA",
+                    pathContext.SolutionRoot,
+                    framework);
                 projectA.Properties.Add("ManagePackageVersionsCentrally", "true");
 
                 // the package references defined in the project should not have version
